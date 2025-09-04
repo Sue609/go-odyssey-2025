@@ -1,7 +1,8 @@
 package main
+
 import "fmt"
 
-func main(){
+func showVariables(){
 	var a int = 6 // explicit type
 	b := "hello, go" // type inferred
 	const pi = 3.14 // constant
