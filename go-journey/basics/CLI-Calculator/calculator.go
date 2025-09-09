@@ -36,6 +36,4 @@ func main() {
 		fmt.Println("Invalid operator")
 
 	}
-
-
 }
