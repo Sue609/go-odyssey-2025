@@ -3,11 +3,9 @@ import "fmt"
 
 func main () {
 	// Creating a slice
-
 	fruits := []string{"Apple", "Banana", "Kiwi", "Pineapple"}
 
 	// Adding an element using append
-
 	fruits = append(fruits, "Orange")
 
 	// Printing all fruits
