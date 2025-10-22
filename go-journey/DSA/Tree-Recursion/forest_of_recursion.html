@@ -72,51 +72,54 @@
         </div>
 
         <script>
-            const stack = document.getElementById('stack');
-            const traveler = document.getElementById('traveler');
-            const node20 = document.getElementById('node20');
+            window.onload = function() {
+                const stack = document.getElementById('stack');
+                const traveler = document.getElementById('traveler');
+                const node20 = document.getElementById('node20');
 
-            const path = [
-                { x: 400, y: 100, msg: "Starting at root: 50 🌳" },
-                { x: 250, y: 250, msg: "Value smaller, go left 🌿" },
-                { x: 150, y: 400, msg: "Found node 20 🍃 — preparing to delete" },
-                { x: 250, y: 250, msg: "Returning from 20 ↩️" },
-                { x: 400, y: 100, msg: "Returning to root 50 🌲 — deletion complete!" },
-            ];
+                const path = [
+                    { x: 400, y: 100, msg: "Starting at root: 50 🌳" },
+                    { x: 250, y: 250, msg: "Value smaller, go left 🌿" },
+                    { x: 150, y: 400, msg: "Found node 20 🍃 — preparing to delete" },
+                    { x: 250, y: 250, msg: "Returning from 20 ↩️" },
+                    { x: 400, y: 100, msg: "Returning to root 50 🌲 — deletion complete!" },
+                ];
 
-            let step = 0;
+                let step = 0;
 
-            function nextStep() {
-                if (step >= path.length) return;
+                function nextStep() {
+                    if (step >= path.length) return;
 
-                const { x, y, msg } = path[step];
-                
-                // Move traveler
-                traveler.style.left = `${x}px`;
-                traveler.style.top = `${y}px`;
+                    const { x, y, msg, deleteNode } = path[step];
+                    
+                    // Move traveler
+                    traveler.style.left = `${x}px`;
+                    traveler.style.top = `${y}px`;
 
-                // Log Message
-                const log = document.createElement('div')
-                log.classList.add('log');
-                log.textContent = msg;
-                stack.appendChild(log);
+                    // Log Message
+                    const log = document.createElement('div')
+                    log.classList.add('log');
+                    log.textContent = msg;
+                    stack.appendChild(log);
 
-                if (deleteNode && node20) {
-                    node20.style.trasnsition = 'opacity 1s ease-out';
-                    node20.style.opacity = '0';
+                    // Handle deletion
+                    if (deleteNode && node20) {
+                        node20.style.trasnsition = 'opacity 1s ease-out';
+                        node20.style.opacity = '0';
 
-                    setTimeout(() => {
-                        node20.style.display = 'none';
-                        const deleteLog = document.createElement('div');
-                        deleteLog.classList.add('log');
-                        deleteLog.textContent = "❌ Node 20 deleted from memory 🌌";
-                        stack.appendChild(deleteLog);
-                    }, 1000);
+                        setTimeout(() => {
+                            node20.style.display = 'none';
+                            const deleteLog = document.createElement('div');
+                            deleteLog.classList.add('log');
+                            deleteLog.textContent = "❌ Node 20 deleted from memory 🌌";
+                            stack.appendChild(deleteLog);
+                        }, 1000);
+                    }
+                    step++;
                 }
-                step++;
-            }
 
-            document.body.addEventListener('click', nextStep)
+                document.body.addEventListener('click', nextStep)
+        };
         </script>
 
     </body>
