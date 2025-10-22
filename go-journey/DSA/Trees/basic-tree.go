@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// Define a node
+// Define a node, which represents a single node in the BST
 type Node struct {
 	Value int
 	Left *Node
@@ -38,6 +38,54 @@ func InOrder(root *Node) {
 	}
 }
 
+
+func deleteNode(root *Node, value int) *Node {
+	if root == nil {
+		return root
+	}
+
+	// Traverse the tree
+	if value < root.Value {
+		root.Left = deleteNode(root.Left, value)
+	} else if value > root.Value {
+		root.Right = deleteNode(root.Right, value)
+	} else {
+		// Node found
+		// Case 1: No child
+		if root.Left == nil && root.Right == nil {
+			return nil
+		}
+
+		// Case 2: One child
+		if root.Left == nil {
+			return root.Right
+		} else if root.Right == nil {
+			return root.Left
+		}
+
+		// Case 3: Two children
+		// Find the inorder successor - smallest value in the right subtree
+		minNode := findMin(root.Right)
+		root.Value = minNode.Value
+
+		// Delete the inordr successor
+		root.Right = deleteNode(root.Right, minNode.Value)
+	}
+	return root
+
+}
+
+
+// Helper function to find the smallest node
+func findMin(node *Node) *Node {
+	current := node
+	for current.Left != nil {
+		current = current.Left
+	}
+	return current
+}
+
+
 func main() {
 	// Build a simple tree
 	var root *Node
@@ -52,4 +100,12 @@ func main() {
 
 	fmt.Print("🌳 InOrder Traversal (sorted order): ")
 	InOrder(root)
+	fmt.Println()
+
+	// Delete a node
+	root = deleteNode(root, 60)
+
+	fmt.Println("Inorder after deleting 60")
+	InOrder(root)
+	fmt.Println()
 }
