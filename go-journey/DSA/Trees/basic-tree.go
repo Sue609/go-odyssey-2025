@@ -1,13 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
+)
 
 // Define a node, which represents a single node in the BST
 type Node struct {
-	Value int
-	Left *Node
-	Right *Node
+	Value int `json:"value"`
+	Left *Node `json:"left,omitempty"`
+	Right *Node `json:"right,omitempty"`
 }
+
+var root *Node
 
 // Insert function - addsa a new value to the tree
 func Insert(root *Node, value int) *Node {
@@ -86,26 +93,44 @@ func findMin(node *Node) *Node {
 }
 
 
+// === Handlers ===
+func insertHandler(w http.ResponseWriter, r *http.Request) {
+	valStr := r.URL.Query().Get("value")
+	val, err := strconv.Atoi(valStr)
+	
+	if err != nil {
+		http.Error(w, "Invalid value", http.StatusBadRequest)
+		return
+	}
+	root = Insert(root, val)
+	fmt.Fprintf(w, "Inserted %d seuccessfully!", val)
+}
+
+
+func deleteHandler(w http.ResponseWriter,  r *http.Request) {
+	valStr := r.URL.Query().Get("value")
+	val, err := strconv.Atoi(valStr)
+
+	if err != nil {
+		http.Error(w, "Invalid value", http.StatusBadRequest)
+		return
+	}
+	root = deleteNode(root, val)
+	fmt.Fprintf(w, "Deleted %d successfully!", val)
+}
+
+
+func treeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(root)
+}
+
+
 func main() {
-	// Build a simple tree
-	var root *Node
+	http.HandleFunc("/insert", insertHandler)
+	http.HandleFunc("/delete", deleteHandler)
+	http.HandleFunc("/tree", treeHandler)
 
-	root = Insert(root, 50)
-    root = Insert(root, 30)
-    root = Insert(root, 70)
-    root = Insert(root, 20)
-    root = Insert(root, 40)
-    root = Insert(root, 60)
-    root = Insert(root, 80)
-
-	fmt.Print("🌳 InOrder Traversal (sorted order): ")
-	InOrder(root)
-	fmt.Println()
-
-	// Delete a node
-	root = deleteNode(root, 60)
-
-	fmt.Println("Inorder after deleting 60")
-	InOrder(root)
-	fmt.Println()
+	fmt.Println("🌲 API running on http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
