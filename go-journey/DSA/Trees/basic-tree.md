@@ -28,3 +28,32 @@ DEFINE function InOrder(node):
     InOrder(node.Left)
     PRINT node.Value
     InOrder(node.Right)
+
+
+DEFINE function deleteNode(root, value):
+    if root is null:
+        return root
+
+    if value < root.Value
+        root.Left = deleteNode(root.Right, value)
+
+    else if value > root.value:
+        root.Right = deleteNode(root.Right, value)
+
+    else:
+        if root.Left == null:
+            return root.Right
+        else if root.Right == null:
+            return root.Left
+
+        root.Value = minValue(root.Right)
+        root.Right = deleteNode(root.Right, root.Value)
+
+    return root
+
+
+function minValue(node):
+    current = node
+    while current.Left != null:
+        current = current.Left
+    return current.Value
