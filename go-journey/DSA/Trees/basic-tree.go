@@ -103,6 +103,7 @@ func insertHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	root = Insert(root, val)
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Inserted %d seuccessfully!", val)
 }
 
@@ -116,6 +117,7 @@ func deleteHandler(w http.ResponseWriter,  r *http.Request) {
 		return
 	}
 	root = deleteNode(root, val)
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Deleted %d successfully!", val)
 }
 
@@ -127,6 +129,7 @@ func treeHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/insert", insertHandler)
 	http.HandleFunc("/delete", deleteHandler)
 	http.HandleFunc("/tree", treeHandler)
