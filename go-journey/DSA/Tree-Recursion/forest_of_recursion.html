@@ -71,11 +71,36 @@
             <h2>🧠 Thought Stack</h2>
         </div>
 
+        <audio id="bg-music" src="sounds/bg-music.mp3" loop></audio>
+        <audio id="click-sound" src="sounds/click.wav"></audio>
+        <audio id="delete-sound" src="sounds/delete.wav"></audio>
+        
+
+
     <script>
         window.onload = function() {
             const stack = document.getElementById('stack');
             const traveler = document.getElementById('traveler');
             const node20 = document.getElementById('node20');
+
+
+            // 🎵 Load sounds
+            const bgMusic = document.getElementById('bg-music');
+            const clickSound = document.getElementById('click-sound');
+            const deleteSound = document.getElementById('delete-sound');
+            //const forestSound = document.getElementById('forest-sound');
+
+            // Start ambient + background sound softly
+            bgMusic.volume = 0.25;
+            //forestSound.volume = 0.2;
+          
+
+            // Play after user clicks (browser policies block autoplay)
+            document.body.addEventListener('click', () => {
+                bgMusic.play();
+               // forestSound.play();
+            }, { once: true });
+
 
             // 🧭 Steps of the traversal
             const path = [
@@ -116,6 +141,7 @@
                         deleteLog.classList.add('log');
                         deleteLog.textContent = "🧹 Node 20 removed from memory 🌌";
                         stack.appendChild(deleteLog);
+                        clickSound.play();
                     }, 1500);
                 }
 
