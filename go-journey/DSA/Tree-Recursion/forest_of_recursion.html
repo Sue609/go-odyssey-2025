@@ -71,56 +71,62 @@
             <h2>🧠 Thought Stack</h2>
         </div>
 
-        <script>
-            window.onload = function() {
-                const stack = document.getElementById('stack');
-                const traveler = document.getElementById('traveler');
-                const node20 = document.getElementById('node20');
+    <script>
+        window.onload = function() {
+            const stack = document.getElementById('stack');
+            const traveler = document.getElementById('traveler');
+            const node20 = document.getElementById('node20');
 
-                const path = [
-                    { x: 400, y: 100, msg: "Starting at root: 50 🌳" },
-                    { x: 250, y: 250, msg: "Value smaller, go left 🌿" },
-                    { x: 150, y: 400, msg: "Found node 20 🍃 — preparing to delete" },
-                    { x: 250, y: 250, msg: "Returning from 20 ↩️" },
-                    { x: 400, y: 100, msg: "Returning to root 50 🌲 — deletion complete!" },
-                ];
+            // 🧭 Steps of the traversal
+            const path = [
+                { x: 400, y: 100, msg: "Starting at root: 50 🌳" },
+                { x: 250, y: 250, msg: "Value smaller, go left 🌿" },
+                { x: 150, y: 400, msg: "Found node 20 🍃 — preparing to delete", deleteNode: true },
+                { x: 250, y: 250, msg: "Returning from 20 ↩️" },
+                { x: 400, y: 100, msg: "Returning to root 50 🌲 — deletion complete!" },
+            ];
 
-                let step = 0;
+            let step = 0;
 
-                function nextStep() {
-                    if (step >= path.length) return;
+            function nextStep() {
+                if (step >= path.length) return;
 
-                    const { x, y, msg, deleteNode } = path[step];
-                    
-                    // Move traveler
-                    traveler.style.left = `${x}px`;
-                    traveler.style.top = `${y}px`;
+                const { x, y, msg, deleteNode } = path[step];
 
-                    // Log Message
-                    const log = document.createElement('div')
-                    log.classList.add('log');
-                    log.textContent = msg;
-                    stack.appendChild(log);
+                // 🎯 Move traveler smoothly
+                traveler.style.transition = 'all 1s ease-in-out';
+                traveler.style.left = `${x}px`;
+                traveler.style.top = `${y}px`;
 
-                    // Handle deletion
-                    if (deleteNode && node20) {
-                        node20.style.trasnsition = 'opacity 1s ease-out';
-                        node20.style.opacity = '0';
+                // 💬 Add log message
+                const log = document.createElement('div');
+                log.classList.add('log');
+                log.textContent = msg;
+                stack.appendChild(log);
 
-                        setTimeout(() => {
-                            node20.style.display = 'none';
-                            const deleteLog = document.createElement('div');
-                            deleteLog.classList.add('log');
-                            deleteLog.textContent = "❌ Node 20 deleted from memory 🌌";
-                            stack.appendChild(deleteLog);
-                        }, 1000);
-                    }
-                    step++;
+                // 🧹 Animate and remove node 20
+                if (deleteNode && node20) {
+                    node20.style.transition = 'all 1.5s ease-out';
+                    node20.style.transform = 'scale(0.1) rotate(360deg)';
+                    node20.style.opacity = '0';
+
+                    setTimeout(() => {
+                        node20.style.display = 'none'; // actually hide it
+                        const deleteLog = document.createElement('div');
+                        deleteLog.classList.add('log');
+                        deleteLog.textContent = "🧹 Node 20 removed from memory 🌌";
+                        stack.appendChild(deleteLog);
+                    }, 1500);
                 }
 
-                document.body.addEventListener('click', nextStep)
+                step++;
+            }
+
+            // 👆 Click anywhere to move to next step
+            document.body.addEventListener('click', nextStep);
         };
-        </script>
+    </script>
+    
 
     </body>
 </html>
