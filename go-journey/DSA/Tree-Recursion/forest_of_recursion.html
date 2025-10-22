@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>🌲 Walking Through the forest of Recursion</title>
+        <style>
+            body {
+                font-family: "poppins", sans-serif;
+                display: flex;
+                background: linear-gradient(to right, #f7f4ed, #e8f5e9);
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+            }
+            .forest {
+                flex: 2;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            .stack {
+                flex: 1;
+                background: #1b4332;
+                color: white;
+                padding: 20px;
+                overflow-y: auto;
+            }
+            .tree-node {
+                position: absolute;
+                background: #81c784;
+                border-radius: 50%;
+                text-align: center;
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                font-weight: bold;
+                color: white;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+            .traveler {
+                position: absolute;
+                font-size: 28px;
+                transition: all 1s ease-in-out;
+            }
+            .log {
+                margin-bottom: 15px;
+                background: #2d6a4f;
+                padding: 10px;
+                border-radius: 10px;
+                opacity: 0.9;
+                animation: fadeIn 0.6s ease-in;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to {opacity: 1; transform: translateY(0); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="forest" id="forest">
+            <div class="tree-node" id="node50" style="top:100px; left:400px;">50</div>
+            <div class="tree-node" id="node30" style="top:250px; left:250px;">30</div>
+            <div class="tree-node" id="node70" style="top:250px; left:550px;">70</div>
+            <div class="tree-node" id="node20" style="top:400px; left:150px;">20</div>
+            <div class="traveler" id="traveler" style="top:50px; left:400px;">🧍‍♀️✨</div>
+        </div>
+
+        <div class="stack" id="stack">
+            <h2>🧠 Thought Stack</h2>
+        </div>
+
+        <script>
+            const stack = document.getElementById('stack');
+            const traveler = document.getElementById('traveler');
+            const node20 = document.getElementById('node20');
+
+            const path = [
+                { x: 400, y: 100, msg: "Starting at root: 50 🌳" },
+                { x: 250, y: 250, msg: "Value smaller, go left 🌿" },
+                { x: 150, y: 400, msg: "Found node 20 🍃 — preparing to delete" },
+                { x: 250, y: 250, msg: "Returning from 20 ↩️" },
+                { x: 400, y: 100, msg: "Returning to root 50 🌲 — deletion complete!" },
+            ];
+
+            let step = 0;
+
+            function nextStep() {
+                if (step >= path.length) return;
+
+                const { x, y, msg } = path[step];
+                
+                // Move traveler
+                traveler.style.left = `${x}px`;
+                traveler.style.top = `${y}px`;
+
+                // Log Message
+                const log = document.createElement('div')
+                log.classList.add('log');
+                log.textContent = msg;
+                stack.appendChild(log);
+
+                if (deleteNode && node20) {
+                    node20.style.trasnsition = 'opacity 1s ease-out';
+                    node20.style.opacity = '0';
+
+                    setTimeout(() => {
+                        node20.style.display = 'none';
+                        const deleteLog = document.createElement('div');
+                        deleteLog.classList.add('log');
+                        deleteLog.textContent = "❌ Node 20 deleted from memory 🌌";
+                        stack.appendChild(deleteLog);
+                    }, 1000);
+                }
+                step++;
+            }
+
+            document.body.addEventListener('click', nextStep)
+        </script>
+
+    </body>
+</html>
