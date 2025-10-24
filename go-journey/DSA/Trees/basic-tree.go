@@ -134,6 +134,17 @@ func main() {
 	http.HandleFunc("/delete", deleteHandler)
 	http.HandleFunc("/tree", treeHandler)
 
+	// Logic for clearing tree
+	http.HandleFunc("/tree/clear", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodDelete {
+			root = nil // Reset global root variable
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(`{"message": "Tree cleared successfully"}`))
+		} else {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		}
+	})
+
 	fmt.Println("🌲 API running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
