@@ -91,6 +91,55 @@ async function showSorted() {
 
   document.getElementById("sortedDisplay").textContent = "In-Order Traversal (Sorted): " + sorted.join(", ");
 }
+
+
+// Function for clearing the entire tree
+async function clearTree() {
+  // Create confirmation modal
+  const confirmBox = document.createElement("div");
+  confirmBox.innerHTML = `
+    <div id="confirm-overlay" style="
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    ">
+      <div style="
+        background: white; padding: 20px 30px; border-radius: 12px;
+        text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        max-width: 320px;
+      ">
+        <h3 style="margin-bottom: 10px;">Are you sure?</h3>
+        <p style="font-size: 14px; color: #555;">This will permanently clear your tree data.</p>
+        <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+          <button id="cancelBtn" style="padding: 8px 16px; border: none; border-radius: 8px; background: #e5e5e5;">Cancel</button>
+          <button id="confirmBtn" style="padding: 8px 16px; border: none; border-radius: 8px; background: #ef4444; color: white;">Yes, Clear</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(confirmBox);
+
+  // Handle buttons
+  document.getElementById("cancelBtn").onclick = () => {
+    document.getElementById("confirm-overlay").remove();
+  };
+
+  document.getElementById("confirmBtn").onclick = async () => {
+    try {
+      const response = await fetch("/tree/clear", { method: "DELETE" });
+      const data = await response.json();
+      console.log(data.message);
+
+      // Clear the D3 visualization
+      d3.select("svg").selectAll("*").remove();
+    } catch (err) {
+      console.error("Error clearing tree:", err);
+    } finally {
+      document.getElementById("confirm-overlay").remove();
+    }
+  };
+}
+
 // Load initial tree on startup
 updateTree();
 
