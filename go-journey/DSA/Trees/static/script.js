@@ -140,6 +140,82 @@ async function clearTree() {
   };
 }
 
+
+// Function that creates a mini animation while building
+// a temporary status messade and a fade-in effect for the rendered tree.
+
+async function generateTree() {
+  const input = document.getElementById("numbersInput").value;
+  const status = document.getElementById("statusMessage");
+
+  if (!input) {
+    showStatus("Please enter some numbers first!", "error");
+    return;
+  }
+
+  // Split input and convert to integers
+  const numbers = input
+    .split(",")
+    .map(n => parseInt(n.trim()))
+    .filter(n => !isNaN(n));
+
+  if (numbers.length === 0) {
+    showStatus("Please enter valid numbers separated by commas.", "error");
+    return;
+  }
+
+  // Show loading animation
+  showStatus("🌳 Generating your beautiful tree...", "loading");
+
+  // Clear current tree before generating a new one
+  await fetch('/tree/clear', { method: 'DELETE' });
+
+  // Insert each number one by one (with tiny delay for fun animation)
+  for (const num of numbers) {
+    await fetch(`/insert?value=${num}`, { method: 'POST' });
+    await new Promise(resolve => setTimeout(resolve, 200)); // slow down slightly
+  }
+
+  // Fetch updated tree data
+  const response = await fetch('/tree');
+  const treeData = await response.json();
+
+  // Clear old visualization
+  d3.select('svg').selectAll('*').remove();
+
+  // Fade-in animation for new tree
+  d3.select('svg')
+    .style("opacity", 0)
+    .transition()
+    .duration(800)
+    .style("opacity", 1);
+
+  renderTree(treeData);
+
+  showStatus("🌸 Tree generated successfully!", "success");
+  console.log("Generated tree with:", numbers);
+}
+
+// Helper to show messages with color and animation
+function showStatus(message, type) {
+  const status = document.getElementById("statusMessage");
+  status.textContent = message;
+
+  if (type === "loading") {
+    status.style.color = "#2e8b57";
+  } else if (type === "success") {
+    status.style.color = "#28a745";
+  } else if (type === "error") {
+    status.style.color = "#d9534f";
+  }
+
+  status.style.opacity = 1;
+  setTimeout(() => {
+    status.style.transition = "opacity 0.5s ease";
+    status.style.opacity = 0;
+  }, 2000);
+}
+
 // Load initial tree on startup
 updateTree();
 

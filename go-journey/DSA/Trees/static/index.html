@@ -23,12 +23,26 @@
     <body>
         <h1>🌳 Binary Search Tree API</h1>
 
+        <div style="margin-bottom: 1em;">
+            <input
+                type="text"
+                id="numbersInput"
+                placeholder="Enter numbers separated by commas (e.g. 8,3,10,1,6,14)"
+                style = "width: 70%; padding: 8px; border-radius: 8px; border: 1px solid #ccc;"
+            />
+            <button onclick="generateTree()" style="padding: 8px 12px; border-radius: 8px; background-color: #4CAF50; color: white; border: none;">
+                Generate Tree 🌿
+            </button>
+            <p id="statusMessage" style="font-weight: bold; transition: opacity 0.5s ease; opacity: 0; margin-top: 8px;"></p>
+
+        </div>
+
         <input type="number" id="valueInput" placeholder="Enter number">
         <button onclick="insertValue()">Insert</button>
         <button onclick="deleteValue()">Delete</button>
         <button onclick="clearTree()" style="background-color: #ff6b6b;">Clear Tree</button>
         <button onclick="showSorted()">Show Sorted Values (InOrder)</button>
-        
+
         <P id="sortedDisplay" style="font-weight: bold; color: #333;"></P>
         <svg id="treeDisplay" width="800" height="500"></svg>
 
