@@ -75,6 +75,22 @@ function renderTree(data) {
     .style("font-weight", "bold");
 }
 
+async function showSorted() {
+  const res = await fetch("/tree");
+  const tree = await res.json();
+
+  const sorted = [];
+  function inOrder(node) {
+    if (!node) return;
+    inOrder(node.left);
+    sorted.push(node.value);
+    inOrder(node.right)
+  }
+
+  inOrder(tree);
+
+  document.getElementById("sortedDisplay").textContent = "In-Order Traversal (Sorted): " + sorted.join(", ");
+}
 // Load initial tree on startup
 updateTree();
 

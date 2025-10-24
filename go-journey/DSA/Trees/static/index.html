@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <meta charset="UTF-8">
-    <head>Binary Tree Visualizer
+    <head>
+        <title>Tree Visualizer</title>
         <style>
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -26,8 +27,8 @@
         <button onclick="insertValue()">Insert</button>
         <button onclick="deleteValue()">Delete</button>
         <button onclick="showSorted()">Show Sorted Values (InOrder)</button>
-        
-
+        <button id="clearTreeBtn">Clear Tree</button>
+        <P id="sortedDisplay" style="font-weight: bold; color: #333;"></P>
         <svg id="treeDisplay" width="800" height="500"></svg>
 
         <script src="https://d3js.org/d3.v7.min.js"></script>
