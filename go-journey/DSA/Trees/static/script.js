@@ -216,34 +216,6 @@ function showStatus(message, type) {
   }, 2000);
 }
 
-
-// Function that talks to our backend and fetches the traversal result.
-function traverse(type) {
-  fetch(`/traverse?type=${type}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(`Traversal (${data.type}):`, data.result)
-
-    const resultDiv = document.getElementById("result");
-    if (resultDiv) {
-      resultDiv.innerHTML = `<strong>${data.type.toUpperCase()} Traversal:</strong> ${data.result.join(", ")}`;
-    }
-  })
-  .catch(error => {
-      console.error("Error fetching traversal:", error);
-    });
-}
-
-// Attach click listeners to each button
-document.getElementById("inorder").addEventListener("click", () => traverse("inorder"));
-document.getElementById("preorder").addEventListener("click", () => traverse("preorder"));
-document.getElementById("postorder").addEventListener("click", () => traverse("postorder"));
-
 // Load initial tree on startup
 updateTree();
 

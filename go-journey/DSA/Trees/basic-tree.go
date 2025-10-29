@@ -167,6 +167,8 @@ func treeHandler(w http.ResponseWriter, r *http.Request) {
 */
 func traverseHandler(w http.ResponseWriter, r *http.Request) {
 	traversalType := r.URL.Query().Get("type")
+	w.Header().Set("Content-Type", "application/json")
+	
 	var result []int
 
 	switch traversalType {
