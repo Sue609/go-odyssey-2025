@@ -45,6 +45,14 @@ func InOrder(root *Node) {
 	}
 }
 
+// PreOrder traversal Root → Left → Right
+func PreOrder(root *Node) {
+	if root != nil {
+		fmt.Print(root.Value, "")
+		PreOrder(root.Left)
+		PreOrder(root.Right)
+	}
+}
 
 func deleteNode(root *Node, value int) *Node {
 	if root == nil {
