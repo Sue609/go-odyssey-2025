@@ -37,31 +37,42 @@ func Insert(root *Node, value int) *Node {
 
 
 // InOrder traversal (Left → Root → Right)
-func InOrder(root *Node) {
-	if root != nil {
-		InOrder(root.Left)
-		fmt.Print(root.Value, " ")
-		InOrder(root.Right)
+func InorderTraversal(root *Node) []int {
+	if root == nil {
+		return []int{}
 	}
+	result := []int{}
+	result = append(result, InorderTraversal(root.Left)...)
+	result = append(result, root.Value)
+	result = append(result, InorderTraversal(root.Right)...)
+	return result
 }
 
+
 // PreOrder traversal Root → Left → Right
-func PreOrder(root *Node) {
-	if root != nil {
-		fmt.Print(root.Value, " ")
-		PreOrder(root.Left)
-		PreOrder(root.Right)
+func PreorderTraversal(root *Node) []int {
+	if root == nil {
+		return []int{}
 	}
+	result := []int{root.Value}
+	result = append(result, PreorderTraversal(root.Left)...)
+	result = append(result, PreorderTraversal(root.Right)...)
+	return result
 }
+
 
 
 // PostOrder traversal - Order: Left → Right → Root
-func PostOrder(root *Node) {
-	if root != nil {
-		PostOrder(root.Left)
-		PostOrder(root.Right)
-		fmt.Print(root.Value, " ")
+func PostorderTraversal(root *Node) []int {
+	if root == nil {
+		return []int{}
 	}
+
+	result := []int{}
+	result = append(result, PostorderTraversal(root.Left)...)
+	result = append(result, PostorderTraversal(root.Right)...)
+	result = append(result, root.Value)
+	return result
 }
 
 
@@ -147,11 +158,46 @@ func treeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
+/*
+ 	TraverseHandler is an HTTP handler function - it handles incoming web requests to your endpoint
+ 	It reads what kind of traversal the user wants (inorder, preorder, or postorder),
+	performs that traversal on your tree, and then sends back the result in JSON format.
+
+	Example: GET /traverse?type=inorder
+*/
+func traverseHandler(w http.ResponseWriter, r *http.Request) {
+	traversalType := r.URL.Query().Get("type")
+	var result []int
+
+	switch traversalType {
+		case "inorder":
+			result = InorderTraversal(root)
+		
+		case "preorder":
+			result = PreorderTraversal(root)
+		
+		case "postorder":
+			result = PostorderTraversal(root)
+		
+		default:
+			http.Error(w, "Invalid traversal type", http.StatusBadRequest)
+			return
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{} {
+		"type": traversalType,
+		"result": result,
+	})
+}
+
+
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/insert", insertHandler)
 	http.HandleFunc("/delete", deleteHandler)
 	http.HandleFunc("/tree", treeHandler)
+	http.HandleFunc("/traverse", traverseHandler)
+
 
 	// Logic for clearing tree
 	http.HandleFunc("/tree/clear", func(w http.ResponseWriter, r *http.Request) {
