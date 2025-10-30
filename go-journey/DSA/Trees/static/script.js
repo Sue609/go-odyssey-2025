@@ -216,5 +216,61 @@ function showStatus(message, type) {
   }, 2000);
 }
 
+
+
+// === Traversal Visualization ===
+document.getElementById("traverseBtn").addEventListener("click", async () => {
+  const type = document.getElementById("traversalType").value;
+  const resultBox = document.getElementById("traversalResult");
+
+  if (!type) {
+    resultBox.textContent = "Please select a traversal type!";
+    resultBox.style.color = "red";
+    return;
+  }
+
+  // Fetch traversal order from Go backend
+  try {
+    const res = await fetch(`/traverse?type=${type}`);
+    if  (!res.ok) throw new Error("Traversal failed");
+    const data = await res.json();
+
+    const nodes = data.result;
+    resultBox.textContent= `${type.toUpperCase()} Traversal: ${nodes.join(" → ")}`;
+    resultBox.style.color = "#333";
+
+    // Animate traversal on tree
+    highlightTraversal(nodes);
+
+  } catch (err) {
+    resultBox.textContent = "Error fetching traversal."
+    resultBox.style.color = "red"
+    console.error(err);
+  }
+});
+
+
+// Highlight traversal animation
+function highlightTraversal(nodes) {
+  if (!nodes || nodes.length === 0) return;
+
+  let circles = d3.selectAll("circle");
+
+  // Reset all circles to default color first
+  circles.attr("fill", "#4CAF50");
+
+  nodes.forEach((value, i) => {
+    setTimeout(() => {
+      circles
+        .filter(d => d.data && d.data.value === value)
+        .transition()
+        .duration(400)
+        .attr("fill", "#ffb703") // Highlight color
+        .transition()
+        .duration(400)
+        .attr("fill", "#a7f3d0"); // Back to default
+    }, i * 800); // time gap between node highlights
+  });
+}
 // Load initial tree on startup
 updateTree();
