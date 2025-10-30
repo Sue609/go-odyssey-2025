@@ -50,6 +50,12 @@
 
         </div>
 
+                <input type="number" id="valueInput" placeholder="Enter number">
+                <button onclick="insertValue()">Insert</button>
+                <button onclick="deleteValue()">Delete</button>
+                <button onclick="clearTree()" style="background-color: #ff6b6b;">Clear Tree</button>
+                <button onclick="showSorted()">Show Sorted Values (InOrder)</button>
+
         
         <div style="margin-bottom: 1rem;">
             <label for="traversalType"><strong>Choose Traversal Order:</strong></label>
@@ -67,17 +73,35 @@
             </button>
         </div>
 
+
+        <div style="margin-top: 1.5rem;">
+            <button id="generateRandomBtn" 
+                style="padding: 8px 12px; border-radius: 6px; background: #673AB7; color: white; border: none;">
+                🎲 Generate Random Tree
+            </button>
+        </div>
+
+        <!-- Traversal Visualization Area -->
+        <div id="treeVisualization" 
+            style="margin-top: 1.5rem; text-align: center;">
+            <canvas id="treeCanvas" width="800" height="60" 
+                style="border: 1px solid #ccc; border-radius: 8px; background: #fafafa;"></canvas>
+
+            <div style="margin-top: 1rem;">
+                <button id="pauseBtn" 
+                        style="padding: 6px 10px; border-radius: 6px; background: #ff9800; color: white; border: none;">
+                    ⏸ Pause
+                </button>
+                <button id="resumeBtn" 
+                        style="padding: 6px 10px; border-radius: 6px; background: #4CAF50; color: white; border: none;">
+                    ▶️ Resume
+                </button>
+            </div>
+        </div>
+
+
         <p id="statusMessage" style="font-weight: bold;"></p>
         <p id="traversalResult" style="font-weight: bold; color: #333;"></p>
-
-
-
-        <input type="number" id="valueInput" placeholder="Enter number">
-        <button onclick="insertValue()">Insert</button>
-        <button onclick="deleteValue()">Delete</button>
-        <button onclick="clearTree()" style="background-color: #ff6b6b;">Clear Tree</button>
-        <button onclick="showSorted()">Show Sorted Values (InOrder)</button>
-
         <P id="sortedDisplay" style="font-weight: bold; color: #333;"></P>
         <svg id="treeDisplay" width="800" height="500"></svg>
 

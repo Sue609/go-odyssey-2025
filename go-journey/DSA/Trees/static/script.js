@@ -272,5 +272,114 @@ function highlightTraversal(nodes) {
     }, i * 800); // time gap between node highlights
   });
 }
+
+
+
+
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
+
+let animationPaused = false;
+let traversalData = [];
+let currentIndex = 0;
+
+// Draw a simple node
+function drawNode(x, y, value, highlight = false) {
+    ctx.beginPath();
+    ctx.arc(x, y, 25, 0, Math.PI * 2);
+    ctx.fillStyle = highlight ? "#90EE90" : "#2196F3";
+    ctx.fill();
+    ctx.strokeStyle = "#333";
+    ctx.stroke();
+    ctx.fillStyle = "white";
+    ctx.font = "16px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(value, x, y);
+}
+
+// Clear and redraw tree layout
+function drawTree(sequence) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gap = canvas.width / (sequence.length + 1);
+    sequence.forEach((val, i) => {
+        drawNode((i + 1) * gap, canvas.height / 2, val);
+    });
+}
+
+// Animate traversal
+async function animateTraversal(sequence) {
+    for (let i = 0; i < sequence.length; i++) {
+        while (animationPaused) await new Promise(r => setTimeout(r, 100));
+        drawTree(sequence.slice(0, i));
+        drawNode((i + 1) * (canvas.width / (sequence.length + 1)), canvas.height / 2, sequence[i], true);
+        await new Promise(r => setTimeout(r, 800));
+    }
+}
+
+document.getElementById("traverseBtn").addEventListener("click", async () => {
+    const traversalType = document.getElementById("traversalType").value;
+
+    if (!traversalType) {
+        alert("Please select a traversal type first!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/traverse?type=${traversalType}`);
+        const data = await response.json();
+
+        traversalData = data.result;
+        currentIndex = 0;
+        animationPaused = false;
+
+        drawTree([]); // Clear old
+        animateTraversal(traversalData);
+
+    } catch (error) {
+        alert("Error fetching traversal data.");
+        console.error(error);
+    }
+});
+
+// Pause/Resume logic
+document.getElementById("pauseBtn").addEventListener("click", () => {
+    animationPaused = true;
+});
+document.getElementById("resumeBtn").addEventListener("click", () => {
+    animationPaused = false;
+});
+
+
+
+document.getElementById("generateRandomBtn").addEventListener("click", async () => {
+    // Generate between 5 and 10 random numbers between 1–100
+    const randomCount = Math.floor(Math.random() * 6) + 5;
+    const randomNumbers = Array.from({ length: randomCount }, () =>
+        Math.floor(Math.random() * 100)
+    );
+
+    console.log("Generated numbers:", randomNumbers);
+
+    // ✅ Clear the existing tree using your actual endpoint
+    await fetch("/tree/clear", { method: "DELETE" });
+
+    // Sequentially insert each random number (with small delay for fun)
+    for (const num of randomNumbers) {
+        await fetch(`/insert?value=${num}`, { method: "POST" });
+        await new Promise(resolve => setTimeout(resolve, 200)); // animation delay
+    }
+
+    // ✅ Fetch updated tree data
+    const response = await fetch("/tree");
+    const data = await response.json();
+
+    // ✅ Call your renderTree() to visualize it
+    d3.select("svg").selectAll("*").remove(); // clear current
+    renderTree(data);
+
+    alert(`🌳 New Random Tree Generated:\n[${randomNumbers.join(", ")}]`);
+});
+
 // Load initial tree on startup
 updateTree();
