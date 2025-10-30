@@ -152,6 +152,7 @@ func deleteHandler(w http.ResponseWriter,  r *http.Request) {
 }
 
 
+// This function is an HTTP handler — it runs whenever someone visits the /tree endpoint (like http://localhost:8080/tree).
 func treeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(root)

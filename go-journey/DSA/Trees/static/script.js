@@ -142,7 +142,7 @@ async function clearTree() {
 
 
 // Function that creates a mini animation while building
-// a temporary status messade and a fade-in effect for the rendered tree.
+// a temporary status message and a fade-in effect for the rendered tree.
 
 async function generateTree() {
   const input = document.getElementById("numbersInput").value;
@@ -218,4 +218,3 @@ function showStatus(message, type) {
 
 // Load initial tree on startup
 updateTree();
-

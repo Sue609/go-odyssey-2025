@@ -18,18 +18,21 @@
                 box-shadow: 0 0 10px rgba(0,0,0,0.1);
             }
 
+            .link {
+            stroke: #aaa;
+            stroke-width: 2;
+            }
+            circle {
+            transition: fill 0.3s ease;
+            }
+
+
         </style>
     </head>
     <body>
-        <h1>🌳 Binary Search Tree API</h1>
-        <div class="buttons">
-            <button id="inorder">InOrder</button>
-            <button id="preorder">PreOrder</button>
-            <button id="postorder">PostOrder</button>
-        </div>
-
-        <div id="result" style="margin-top: 10px; font-weight: bold;"></div>
+        <h1>🌳 Binary Search Tree Traversal Visualizer</h1>
         
+
         <div style="margin-bottom: 1em;">
             <input
                 type="text"
@@ -37,12 +40,37 @@
                 placeholder="Enter numbers separated by commas (e.g. 8,3,10,1,6,14)"
                 style = "width: 70%; padding: 8px; border-radius: 8px; border: 1px solid #ccc;"
             />
-            <button onclick="generateTree()" style="padding: 8px 12px; border-radius: 8px; background-color: #4CAF50; color: white; border: none;">
+
+            <button 
+                onclick="generateTree()" 
+                style="padding: 8px 12px; border-radius: 8px; background-color: #4CAF50; color: white; border: none;">
                 Generate Tree 🌿
             </button>
             <p id="statusMessage" style="font-weight: bold; transition: opacity 0.5s ease; opacity: 0; margin-top: 8px;"></p>
 
         </div>
+
+        
+        <div style="margin-bottom: 1rem;">
+            <label for="traversalType"><strong>Choose Traversal Order:</strong></label>
+            <select id="traversalType"
+                style="padding: 6px 10px; border-radius: 6px; border: 1px solid #aaa; margin-left: 8px;">
+                <option value="">--Select--</option>
+                <option value="inorder">Inorder (Left → Root → Right)</option>
+                <option value="preorder">Preorder (Root → Left → Right)</option>
+                <option value="postorder">Postorder (Left → Right → Root)</option>
+            </select>
+
+            <button id="traverseBtn"
+                style="padding: 8px 12px; border-radius: 6px; background: #2196F3; color: white; border: none; margin-left: 8px;">
+                Visualize Traversal 🔍
+            </button>
+        </div>
+
+        <p id="statusMessage" style="font-weight: bold;"></p>
+        <p id="traversalResult" style="font-weight: bold; color: #333;"></p>
+
+
 
         <input type="number" id="valueInput" placeholder="Enter number">
         <button onclick="insertValue()">Insert</button>
@@ -54,6 +82,6 @@
         <svg id="treeDisplay" width="800" height="500"></svg>
 
         <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="script.js" defer></script>
+        <script src="script.js"></script>
     </body>
 </html>
