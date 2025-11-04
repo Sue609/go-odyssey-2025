@@ -381,5 +381,32 @@ document.getElementById("generateRandomBtn").addEventListener("click", async () 
     alert(`🌳 New Random Tree Generated:\n[${randomNumbers.join(", ")}]`);
 });
 
+
+const visualSection = document.getElementById("visualSection");
+const generateBtn = document.getElementById("generateBtn");
+const randomBtn = document.getElementById("generateRandomBtn");
+const closeVisualBtn = document.getElementById("closeVisualBtn");
+
+// Show the visualization area
+function showVisualization() {
+  visualSection.classList.remove("hidden");
+  // Call your render or generate logic here
+  renderTree(root); // or generateRandomTree()
+}
+
+// Hide the visualization area
+function closeVisualization() {
+  visualSection.classList.add("hidden");
+  // Optionally clear the SVG when closing
+  const svg = document.getElementById("treeDisplay");
+  svg.innerHTML = "";
+}
+
+// Event listeners
+generateBtn.addEventListener("click", showVisualization);
+randomBtn.addEventListener("click", showVisualization);
+closeVisualBtn.addEventListener("click", closeVisualization);
+
+
 // Load initial tree on startup
 updateTree();

@@ -183,14 +183,41 @@
 
     canvas {
         display: block;
-        margin: 0 auto;
-        background-color: white;
-        border-radius: 12px;
     }
 
 
+    .hidden {
+  display: none;
+}
 
-    </style>
+#visualSection {
+  margin-top: 20px;
+  width: 100%;
+  transition: all 0.4s ease;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SVG wrapper adapts to tree size dynamically */
+#svgWrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+}
+#treeDisplay {
+  width: 100%;
+  height: auto;
+}
+
+
+
+  </style>
   </head>
 
   <body>
@@ -198,6 +225,7 @@
       <header class="app-header">
         <h1><span class="logo">🌳</span> Binary Search Tree Visualizer</h1>
       </header>
+      
 
       <!-- Top controls card -->
       <section class="card">
@@ -207,7 +235,10 @@
           </div>
 
           <div class="small-btns">
-            <button class="btn btn-cta" onclick="generateTree()">Generate Tree 🌿</button>
+          <!-- Controls Section -->
+              <div class="vis-controls">
+                <button id="generateBtn" class="btn btn-cta" onclick="generateTree()">🌳 Generate Tree</button>
+              </div>
             <p id="statusMessage" style="font-weight: bold; transition: opacity 0.5s ease; opacity: 0; margin-top: 8px;"></p>
           </div>
         </div>
@@ -218,12 +249,14 @@
         <div class="controls">
           <input id="valueInput" class="input" type="number" placeholder="Enter number" style="max-width:180px;">
           <div class="small-btns">
-            <button class="btn btn-ghost" onclick="insertValue()">Insert</button>
-            <button class="btn btn-ghost" onclick="deleteValue()">Delete</button>
+            <button class="btn btn-ghost" onclick="insertValue()">➕ Insert Node</button>
+            <button class="btn btn-ghost" onclick="deleteValue()">🗑️ Delete Node</button>
             <button class="btn" style="background:#ff6b6b; color:white;" onclick="clearTree()">Clear Tree</button>
-            <button class="btn btn-ghost" onclick="showSorted()">Show Sorted Values</button>
+            <button id="generateRandomBtn" class="btn" style="background:#6b46c1; color:white;">🎲 Generate Random Tree</button>
           </div>
         </div>
+
+        
 
         <div style="height:12px"></div>
 
@@ -239,25 +272,25 @@
           <button id="traverseBtn" class="btn btn-cta" style="margin-left:auto;">Visualize Traversal 🔍</button>
         </div>
 
-        <!-- Traversal chips and result -->
-        
-
         <div class="traversal-result" id="traversalResult">INORDER Traversal: 34 → 50 → 65 → 67 → 90</div>
 
       </section>
 
-      <!-- Visualization Card -->
-      <section class="card visual-card">
+
+      <!-- Visualization Section (Hidden by Default) -->
+      <section id="visualSection" class="card visual-card hidden">
         <div class="vis-controls">
+          
           <button id="pauseBtn" class="btn" style="background:#ff9800; color:#fff;">⏸ Pause</button>
           <button id="resumeBtn" class="btn btn-cta">▶️ Resume</button>
-          <button id="generateRandomBtn" class="btn" style="background:#6b46c1; color:white;">🎲 Generate Random Tree</button>
+          <button id="closeVisualBtn" class="btn" style="background:#f44336; color:white;">❌ Close Visualization</button>
         </div>
 
         <div id="svgWrapper">
-          <svg id="treeDisplay" width="800" height="500" role="img" aria-label="Binary search tree visualization"></svg>
+          <svg id="treeDisplay" role="img" aria-label="Binary search tree visualization"></svg>
         </div>
       </section>
+
     </div>
 
     <canvas id="treeCanvas"></canvas>
