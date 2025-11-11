@@ -44,6 +44,25 @@ func (g *Graph) DFSIterative(start int) {
 	}
 }
 
+
+// Function checks if there is a path from source to destination using DFS
+func (g *Graph) HasPath(source, destination int) bool {
+
+	// Base case: If source is the same as destination
+	if source == destination {
+		return true
+	}
+
+	// Visit each neighbour recursively
+
+	for _, neighbor := range g.adj[source] {
+		if g.HasPath(neighbor, destination) {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	g := Graph{}
 	g.AddEdge(0, 1)
@@ -55,4 +74,11 @@ func main() {
 
 	fmt.Println("Iterative DFS starting from node 0:")
 	g.DFSIterative(0)
+
+	fmt.Println()
+
+	fmt.Println("\nPath checks")
+	fmt.Println("Path 0 -> 6?", g.HasPath(0, 6)) // true
+	fmt.Println("Path 2 -> 4?", g.HasPath(2, 4)) // false
+	fmt.Println("Path 1 -> 4?", g.HasPath(1, 4)) // true
 }
