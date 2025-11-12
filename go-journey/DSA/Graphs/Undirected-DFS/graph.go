@@ -70,6 +70,22 @@ func (g *Graph) hasPathRecursive(current, destination int, visited map[int] bool
 	return false
 }
 
+
+// Function returns the number of connected components in the graph
+func (g Graph) connectedComponentCount() int {
+	visited := make(map[int]bool)
+	count := 0
+
+	for node := range g.adj {
+		if !visited[node] {
+			g.DFSRecursive(node, visited)
+			count++
+		}
+	}
+	return count
+}
+
+
 func main() {
 	g := Graph{}
 	g.AddEdge(0, 1)
@@ -78,6 +94,11 @@ func main() {
 	g.AddEdge(1, 4)
 	g.AddEdge(2, 5)
 	g.AddEdge(3, 6)
+
+	fmt.Println("Number of connected components:", g.connectedComponentCount())
+
+	g.AddEdge(7, 8)
+	fmt.Println("Number of connected components:", g.connectedComponentCount())
 
 	g.DFS(1)
 
