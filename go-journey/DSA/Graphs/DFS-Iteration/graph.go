@@ -8,7 +8,7 @@ type Graph struct {
 	adj map[int][]int
 }
 
-// AddEdge adds a directed edge (u -> v)
+// AddEdge adds a directed edge (u -> v), one way connection
 // (g *Graph) -> method receiver, It belongs to type Graph, and works as a pointer
 func (g *Graph) AddEdge(u, v int) {
 	if g.adj == nil {
@@ -45,7 +45,7 @@ func (g *Graph) DFSIterative(start int) {
 }
 
 
-// Function checks if there is a path from source to destination using DFS
+// Function checks if there is a path from source to destination using DFS in a directed graph
 func (g *Graph) HasPath(source, destination int) bool {
 
 	// Base case: If source is the same as destination
